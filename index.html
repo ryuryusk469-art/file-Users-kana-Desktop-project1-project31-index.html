@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>まいにち使う副詞パズル (5 Essential Adverbs)</title>
+    <style>
+        /* Canva風の優しく洗練されたカラーデザイン */
+        :root {
+            --primary-color: #4A90E2;
+            --background-color: #F5F7FA;
+            --card-color: #FFFFFF;
+            --text-dark: #333333;
+            --text-muted: #777777;
+            --accent-color: #E24A84;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* アプリ全体のコンテナ */
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* フラッシュカードのデザイン */
+        .card {
+            background-color: var(--card-color);
+            border-radius: 24px;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+            padding: 40px 25px;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .adverb-japanese {
+            font-size: 46px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .adverb-reading {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .adverb-english {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 25px;
+        }
+
+        /* 音声再生ボタン */
+        .audio-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 26px;
+            cursor: pointer;
+            box-shadow: 0 5px 12px rgba(74, 144, 226, 0.3);
+            margin-bottom: 25px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .audio-btn:hover {
+            background-color: #357ABD;
+            transform: scale(1.05);
+        }
+
+        /* 例文ボックス */
+        .example-box {
+            background-color: #F8FAFC;
+            border-left: 5px solid var(--primary-color);
+            padding: 18px;
+            border-radius: 0 16px 16px 0;
+            text-align: left;
+        }
+
+        .example-ja {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .example-ja strong {
+            color: var(--accent-color);
+            font-size: 20px;
+            border-bottom: 2px dashed var(--accent-color);
+            padding-bottom: 1px;
+        }
+
+        .example-en {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* コントロールボタン */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            padding: 14px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* 進捗ドット */
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #E0E6ED;
+            transition: background-color 0.3s;
+        }
+
+        .dot.active {
+            background-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🧩 まいにち使う副詞パズル</h1>
+        <div class="subtitle">🔊ボタンを押して、発音と例文をチェックしよう！</div>
+    </header>
+
+    <div class="app-container">
+        <!-- フラッシュカード本体 -->
+        <div class="card">
+            <div class="adverb-japanese" id="adverb-ja">ときどき</div>
+            <div class="adverb-reading" id="adverb-read">［ ときどき / tokidoki ］</div>
+            <div class="adverb-english" id="adverb-en">Sometimes</div>
+            
+            <!-- 音声再生ボタン -->
+            <button class="audio-btn" onclick="speakCurrentWord()" title="音声を再生">🔊</button>
+            
+            <!-- 例文ボックス -->
+            <div class="example-box">
+                <div class="example-ja" id="example-ja"><strong>ときどき</strong>日本のアニメを見ます。</div>
+                <div class="example-en" id="example-en">I sometimes watch Japanese anime.</div>
+            </div>
+        </div>
+
+        <!-- 進む・戻るボタン -->
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="prevCard()">⬅️ まえ (Prev)</button>
+            <button class="nav-btn" onclick="nextCard()">つぎ (Next) ➡️</button>
+        </div>
+
+        <!-- ページの下のマルぽち -->
+        <div class="progress-dots" id="dots-container"></div>
+    </div>
+
+    <script>
+        // 【新：シンプル版】5つの副詞データ
+        const adverbsData = [
+            {
+                ja: "ときどき",
+                read: "［ ときどき / tokidoki ］",
+                en: "Sometimes",
+                exJa: "<strong>ときどき</strong>日本のアニメを見ます。",
+                exEn: "I sometimes watch Japanese anime."
+            },
+            {
+                ja: "たいてい",
+                read: "［ たいてい / taitei ］",
+                en: "Usually",
+                exJa: "夜は、<strong>たいてい</strong>11時に寝ます。",
+                exEn: "I usually go to bed at 11 PM."
+            },
+            {
+                ja: "いつも",
+                read: "［ いつも / itsumo ］",
+                en: "Always",
+                exJa: "朝、<strong>いつも</strong>コーヒーを飲みます。",
+                exEn: "I always drink coffee in the morning."
+            },
+            {
+                ja: "すこし",
+                read: "［ すこし / sukoshi ］",
+                en: "A little",
+                exJa: "日本語が<strong>すこし</strong>わかります。",
+                exEn: "I understand a little Japanese."
+            },
+            {
+                ja: "たくさん",
+                read: "［ たくさん / takusan ］",
+                en: "A lot / Many",
+                exJa: "今日、水を<strong>たくさん</strong>飲みました。",
+                exEn: "I drank a lot of water today."
+            }
+        ];
+
+        let currentIndex = 0;
+
+        // 画面の表示を新しくする関数
+        function updateCard() {
+            const data = adverbsData[currentIndex];
+            document.getElementById('adverb-ja').innerText = data.ja;
+            document.getElementById('adverb-read').innerText = data.read;
+            document.getElementById('adverb-en').innerText = data.en;
+            document.getElementById('example-ja').innerHTML = data.exJa;
+            document.getElementById('example-en').innerText = data.exEn;
+
+            // マルぽちの色の切り替え
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // つぎのカードへ
+        function nextCard() {
+            currentIndex = (currentIndex + 1) % adverbsData.length;
+            updateCard();
+        }
+
+        // まえのカードへ
+        function prevCard() {
+            currentIndex = (currentIndex - 1 + adverbsData.length) % adverbsData.length;
+            updateCard();
+        }
+
+        // 🔊 ボタンを押したときに日本語の声を出す関数（Web Speech API）
+        function speakCurrentWord() {
+            window.speechSynthesis.cancel();
+
+            const data = adverbsData[currentIndex];
+            const cleanExampleJa = data.exJa.replace(/<[^>]*>/g, '');
+
+            // 1. 副詞の単語そのものを読む
+            const wordSpeech = new SpeechSynthesisUtterance(data.ja);
+            wordSpeech.lang = 'ja-JP'; 
+            wordSpeech.rate = 0.8; // 生徒さんのためにほんの少しテンポを落として聞き取りやすく
+
+            // 2. 後ろの例文を読む
+            const exampleSpeech = new SpeechSynthesisUtterance(cleanExampleJa);
+            exampleSpeech.lang = 'ja-JP';
+            exampleSpeech.rate = 0.9; 
+
+            wordSpeech.onend = function() {
+                setTimeout(() => {
+                    window.speechSynthesis.speak(exampleSpeech);
+                }, 550); // 単語と例文の間の「ま」を心地よく調整
+            };
+
+            window.speechSynthesis.speak(wordSpeech);
+        }
+
+        // 下のマルぽちを自動で作成
+        const dotsContainer = document.getElementById('dots-container');
+        adverbsData.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (index === 0) dot.classList.add('active');
+            dotsContainer.appendChild(dot);
+        });
+
+        updateCard();
+    </script>
+</body>
+</html>
